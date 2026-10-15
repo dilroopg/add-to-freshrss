@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Add to FreshRSS",
+  "version": "2.4.0",
+  "description": "Right-click any link to subscribe it to FreshRSS.",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "action": {
+    "default_title": "Add to FreshRSS - preferences",
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "notifications",
+    "tabs"
+  ],
+  "optional_host_permissions": [
+    "<all_urls>"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "add-to-freshrss@local",
+      "strict_min_version": "128.0"
+    }
+  }
+}

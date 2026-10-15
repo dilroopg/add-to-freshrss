@@ -1,0 +1,10 @@
+# build output from `npx web-ext build`
+web-ext-artifacts/
+
+# packaged add-ons
+*.xpi
+*.crx
+
+# OS noise
+.DS_Store
+Thumbs.db

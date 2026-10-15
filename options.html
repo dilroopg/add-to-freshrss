@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Add to FreshRSS</title>
+  <style>
+    html { background: #171717; }
+    body {
+      width: 400px; margin: 0 auto; padding: 14px; box-sizing: border-box;
+      background: #171717; color: #e8e8e8; font: 13px/1.5 system-ui, sans-serif;
+    }
+    h1 { font-size: 15px; margin: 0 0 2px; }
+    p.sub { color: #999; margin: 0 0 14px; font-size: 12px; }
+    fieldset { border: 1px solid #333; border-radius: 8px; margin: 0 0 12px; padding: 12px; }
+    legend { padding: 0 6px; color: #6ea8ff; font-size: 12px; }
+    label { display: block; margin: 9px 0 3px; font-weight: 600; font-size: 12px; }
+    label.check { display: flex; align-items: center; gap: 8px; margin: 9px 0 4px; font-weight: 600; }
+    input[type=checkbox] { width: auto; margin: 0; accent-color: #0062db; }
+    input[type=text], input[type=url], input[type=password], select {
+      width: 100%; box-sizing: border-box; padding: 7px 9px; border-radius: 6px;
+      border: 1px solid #3a3a3a; background: #0f0f0f; color: #e8e8e8; font-size: 13px;
+    }
+    .hint { color: #8a8a8a; font-size: 11px; margin-top: 3px; }
+    .row { display: flex; gap: 8px; align-items: center; margin-top: 14px; }
+    button { padding: 8px 14px; border: 0; border-radius: 6px; font-size: 13px; cursor: pointer; }
+    button.primary { background: #0062db; color: #fff; }
+    button.primary:hover { background: #1a74e8; }
+    button.ghost { background: #2a2a2a; color: #ddd; }
+    button.ghost:hover { background: #383838; }
+    #status { font-size: 12px; }
+    .ok { color: #6ee7a0; }
+    .err { color: #ff8a8a; }
+    .pw { position: relative; }
+    .pw input { padding-right: 36px; }
+    button.eye {
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: 0; padding: 5px; border-radius: 5px;
+      color: #8a8a8a; cursor: pointer;
+    }
+    button.eye:hover { color: #e8e8e8; background: #262626; }
+    button.eye svg { width: 16px; height: 16px; display: block; }
+    button.eye .eye-off { display: none; }
+    button.eye.revealed .eye-on { display: none; }
+    button.eye.revealed .eye-off { display: block; }
+  </style>
+</head>
+<body>
+  <h1>Add to FreshRSS</h1>
+  <p class="sub">Right-click any link &rarr; <b>Add to FreshRSS</b>.</p>
+
+  <form id="form">
+    <fieldset>
+      <legend>FreshRSS</legend>
+      <label for="baseUrl">Address</label>
+      <input type="url" id="baseUrl" placeholder="https://freshrss.example.com">
+      <div class="hint">Base URL only - no trailing slash, no /i/ path, no /api/ path.</div>
+      <div class="row" style="margin-top:10px">
+        <button type="button" id="grant" class="ghost">Grant access to this address</button>
+      </div>
+      <div class="hint" id="grantState"></div>
+
+      <label class="check" for="useApi">
+        <input type="checkbox" id="useApi">
+        Add silently via the API (no tab opens)
+      </label>
+      <div class="hint">
+        Off (default): the feed is added by opening FreshRSS's own add page in a
+        background tab &mdash; no password needed.<br>
+        On: the feed is submitted straight from here and you get a notification instead.
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>API credentials (for silent mode)</legend>
+      <label for="user">Username</label>
+      <input type="text" id="user" autocomplete="off" placeholder="your FreshRSS username">
+
+      <label for="apiPassword">API password</label>
+      <div class="pw">
+        <input type="password" id="apiPassword" autocomplete="off">
+        <button type="button" id="pwToggle" class="eye" aria-label="Show password" title="Show password">
+          <svg class="eye-on" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M1 8s2.5-4.5 7-4.5S15 8 15 8s-2.5 4.5-7 4.5S1 8 1 8z"/>
+            <circle cx="8" cy="8" r="2"/>
+          </svg>
+          <svg class="eye-off" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M1 8s2.5-4.5 7-4.5S15 8 15 8s-2.5 4.5-7 4.5S1 8 1 8z"/>
+            <circle cx="8" cy="8" r="2"/>
+            <path d="M2.5 13.5 13.5 2.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="hint">
+        Not your login password. Set one in FreshRSS under
+        <b>Settings &rarr; Profile &rarr; API management</b>.
+      </div>
+
+      <label for="category">Default category (optional)</label>
+      <input type="text" id="category" placeholder="e.g. Comics">
+    </fieldset>
+
+    <div class="row">
+      <button type="submit" class="primary">Save</button>
+      <button type="button" id="test" class="ghost">Test</button>
+      <span id="status"></span>
+    </div>
+  </form>
+
+  <p id="diag" class="hint" style="margin-top:12px;word-break:break-word"></p>
+
+  <script src="options.js"></script>
+</body>
+</html>
