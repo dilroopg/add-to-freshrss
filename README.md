@@ -21,11 +21,13 @@
 > - If you cannot accept those terms, **do not install this**. Use the official
 >   FreshRSS web UI instead.
 >
-> It is provided under the **MIT licence** — see `LICENSE` — which means you are free to
-> **use, modify, fork, redistribute, and sell** it, with no permission needed and no
-> obligation beyond keeping the copyright notice. If you find a bug, please fix it and
-> send a patch; the licence explicitly invites that. See
-> [Contributing](#contributing) for how the code came to exist.
+> It is provided under the **GNU General Public License v3.0 or later** — see `LICENSE`.
+> You may **use, study, modify, fork and redistribute** it, and you may even redistribute
+> it for a fee, but if you distribute a build of it you **must** publish your version's
+> complete source under GPL-3.0, **keep the copyright notice and attribution to the
+> original author**, and state what you changed. You may not ship a modified build as
+> closed source or with the credit stripped. See [Contributing](#contributing) for how
+> the code came to exist.
 
 Right-click any link — or any page — and subscribe it to your
 [FreshRSS](https://freshrss.org) — no copy-pasting URLs into the web UI.
@@ -186,20 +188,42 @@ Nothing is sent anywhere except your own FreshRSS instance. Credentials live in
 it affects how you should treat the code: read it before you trust it, and don't assume
 it has had the review a human-written project would have had.
 
-The licence explicitly grants you the right to change anything. If you find a defect:
+You are free to read, run, study, and change this code. Under GPL-3.0 that freedom comes
+with obligations — if you find a defect:
 
-1. **Fork it and fix it.** You need no permission. `LICENSE` is MIT: modify, repackage,
-   redistribute, even sell it.
+1. **Fork it and fix it.** No permission needed. But if you distribute your version in
+   any form, GPL-3.0 requires you to publish its complete source under GPL-3.0 and to
+   keep the copyright notice and attribution intact. You cannot ship a modified build as
+   closed source, and you cannot strip the credit.
 2. **Send a pull request** if you'd like the fix upstream. There is no CLA to sign and no
-   contribution process beyond "make the change and explain why".
-3. **Publish your own version** under a different name if you'd rather not wait. Point
-   people at it. Nothing here is locked down.
+   contribution process beyond "make the change and explain why" — but you are not
+   required to send it, only to publish your source if you distribute.
+3. **Do not republish this under a different name as if it were your own.** A fork must
+   stay clearly marked as a fork, with the original author credited.
 
-Please keep the AI-authorship disclosure (or an accurate description of your own code) in
-any fork, so users can make an informed choice about what they're installing.
+Keep the AI-authorship disclosure (or an accurate description of your own code) in any
+fork, so users can make an informed choice about what they're installing.
 
 ## License
 
-MIT — see `LICENSE`. Copyright (c) 2026 hardlysleep.ing.
+**GNU General Public License v3.0 or later** (GPL-3.0-or-later) — see `LICENSE`.
+Copyright (C) 2026 hardlysleep.ing.
 
-Use it, fork it, ship it, sell it. The only obligation is keeping the copyright notice.
+This program is free software: you can redistribute it and/or modify it under the terms
+of the GPL as published by the Free Software Foundation, either version 3 of the License,
+or (at your option) any later version. It is distributed in the hope that it will be
+useful, but **without any warranty**; without even the implied warranty of
+merchantability or fitness for a particular purpose.
+
+**What that means in practice:**
+
+| You may | You must |
+|---|---|
+| use it, run it, study it | keep the copyright notice and attribution |
+| modify it, fork it | publish your complete source if you distribute it |
+| redistribute it, even for a fee | license your version under GPL-3.0 as well |
+| | state what you changed |
+
+**You may not** take this code, modify it, and ship it as closed-source or without
+crediting the original author. Derivative works are permitted only under these same
+terms.
