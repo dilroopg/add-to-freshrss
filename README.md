@@ -64,7 +64,7 @@ the moment it loses focus, so anything awaited inside it could silently never fi
 built for you ahead of time — you build the add-on yourself from source, which takes
 about ten seconds and means you are running exactly the code you can read.
 
-### The easy way: build it from source (no account, no signing)
+### Build it from source (no account, no signing)
 
 Requires [Node.js](https://nodejs.org) (any recent LTS).
 
