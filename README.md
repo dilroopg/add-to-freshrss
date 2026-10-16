@@ -88,7 +88,7 @@ That is a **permanent** install — it survives restarts.
 > add-on; it is Firefox requiring every add-on to be signed by Mozilla. You have two
 > options: set `xpinstall.signatures.required` to `false` in `about:config` (the
 > documented [developer route](https://extensionworkshop.com/documentation/publish/self-distribution/),
-> your call, and it applies to all add-ons), or wait for the AMO-listed version below
+> your call, and it applies to all add-ons), or wait for a Mozilla-signed build
 > which installs with signing on.
 
 ### The quick way: temporary load (cleared on restart)
@@ -110,7 +110,7 @@ And to confirm your build matches what you just read:
 unzip -l web-ext-artifacts/add_to_freshrss-*.zip   # 9 runtime files, no extras
 ```
 
-### Signed build / AMO
+### Signed build (not published yet)
 
 There is no Mozilla-signed build published yet. Once there is, it will install
 normally from an `.xpi` link without touching `about:config`, and it will auto-update.
