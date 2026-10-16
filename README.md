@@ -61,19 +61,60 @@ the moment it loses focus, so anything awaited inside it could silently never fi
 
 ## Install
 
-Until it's on AMO, load it as a temporary add-on:
+**Firefox and Zen both work**, and so does any other Firefox-based browser. Nothing is
+built for you ahead of time — you build the add-on yourself from source, which takes
+about ten seconds and means you are running exactly the code you can read.
 
-1. `about:debugging#/runtime/this-firefox`
-2. **Load Temporary Add-on…** → pick `manifest.json` in this folder.
+### The easy way: build it from source (no account, no signing)
 
-Temporary add-ons are cleared when Firefox restarts. For a permanent install, zip the
-folder and load it as an unsigned XPI, or build/sign it with
-[`web-ext`](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/):
+Requires [Node.js](https://nodejs.org) (any recent LTS).
 
 ```sh
-npx web-ext build        # -> web-ext-artifacts/*.zip
-npx web-ext lint         # validator clean before you submit
+git clone https://github.com/dilroopg/add-to-freshrss.git
+cd add-to-freshrss
+npx --yes web-ext@latest build          # -> web-ext-artifacts/add_to_freshrss-*.zip
 ```
+
+Now install the `.zip`:
+
+1. In Firefox/Zen, go to `about:addons`
+2. Gear icon (top right) → **Install Add-on From File…**
+3. Pick the `.zip` from `web-ext-artifacts/` and confirm
+
+That is a **permanent** install — it survives restarts.
+
+> **Firefox will refuse it with "this add-on could not be installed because it appears
+> to be corrupt"** unless signature enforcement is off. That is not a problem with this
+> add-on; it is Firefox requiring every add-on to be signed by Mozilla. You have two
+> options: set `xpinstall.signatures.required` to `false` in `about:config` (the
+> documented [developer route](https://extensionworkshop.com/documentation/publish/self-distribution/),
+> your call, and it applies to all add-ons), or wait for the AMO-listed version below
+> which installs with signing on.
+
+### The quick way: temporary load (cleared on restart)
+
+1. `about:debugging#/runtime/this-firefox`
+2. **Load Temporary Add-on…** → pick `manifest.json` from the cloned folder
+
+Fine for a look, but it disappears when the browser closes.
+
+### Verification, if you care
+
+```sh
+npx --yes web-ext@latest lint --source-dir .   # expect 0 errors
+```
+
+And to confirm your build matches what you just read:
+
+```sh
+unzip -l web-ext-artifacts/add_to_freshrss-*.zip   # 9 runtime files, no extras
+```
+
+### Signed build / AMO
+
+There is no Mozilla-signed build published yet. Once there is, it will install
+normally from an `.xpi` link without touching `about:config`, and it will auto-update.
+Until then the source build above is the supported path.
 
 Then open the extension's preferences (toolbar button) and fill in:
 
@@ -82,6 +123,10 @@ Then open the extension's preferences (toolbar button) and fill in:
 
 The API password is *not* your login password. In FreshRSS: **Settings → Profile →
 API management** (or `./cli/create-user.php --api-password …`).
+
+**Firefox versions below 140 are not supported** — the manifest uses
+`data_collection_permissions`, which older versions do not understand and will reject.
+140 is the current ESR, so any maintained Firefox or Zen build qualifies.
 
 ## Getting silent mode right
 
