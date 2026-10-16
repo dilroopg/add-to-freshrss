@@ -41,7 +41,7 @@ function installMenu() {
 
   try {
     chrome.contextMenus.create(
-      { id: MENU_ID, title: "Add to FreshRSS", contexts: ["link"] },
+      { id: MENU_ID, title: "Add to FreshRSS", contexts: ["link", "page", "frame"] },
       () => {
         const err = chrome.runtime.lastError;
         record(err ? "ERROR: " + err.message
@@ -57,12 +57,62 @@ installMenu();
 chrome.runtime.onInstalled.addListener(installMenu);
 chrome.runtime.onStartup.addListener(installMenu);
 
-/* Toolbar button: open the preferences in a real TAB.
- * A popup is torn down the moment a permission prompt appears (or you click
- * anywhere else), which loses whatever was typed - the options page is built
- * to live in a tab (options_ui.open_in_tab). */
+/* Toolbar button now opens the paste-and-add popup (popup.html, declared as
+ * action.default_popup in the manifest), so this listener only serves as the
+ * fallback for if the popup is ever removed from the manifest. Preferences
+ * live behind the Settings button inside the popup, and stay in a real TAB
+ * because a popup is torn down by permission prompts. */
 chrome.action.onClicked.addListener(() => {
   browser.runtime.openOptionsPage();
+});
+
+/* ---------- add from the popup ----------
+ * The popup delegates here because a popup can be closed at any moment (loss
+ * of focus, a permission prompt), which would abandon an in-flight await.
+ * This background page outlives it, so the add always completes.
+ */
+browser.runtime.onMessage.addListener(async (msg) => {
+  if (!msg || msg.type !== "add-urls") return;
+
+  const urls = Array.isArray(msg.urls) ? msg.urls.filter(Boolean) : [];
+  if (!urls.length) return { ok: false, error: "No links given." };
+
+  const cfg = await getCfg();
+
+  if (!trimBase(cfg.baseUrl)) {
+    return { ok: false, error: "Open Settings and set your FreshRSS address." };
+  }
+
+  const useApi = cfg.mode === "api" && cfg.user && cfg.apiPassword;
+
+  // deeplink mode: open FreshRSS's own pre-filled add page, one per link, in
+  // background tabs he never asked to be pulled away from.
+  if (!useApi) {
+    for (const url of urls) {
+      await openDeepLink(cfg, url);
+    }
+    return { ok: true, opened: true, added: 0, failed: [] };
+  }
+
+  let added = 0;
+  const failed = [];
+  for (const url of urls) {
+    try {
+      await addViaApi(cfg, url);
+      added++;
+    } catch (e) {
+      failed.push({ url, error: String(e && e.message ? e.message : e) });
+    }
+  }
+
+  if (added) {
+    notify(added === 1 ? "Added to FreshRSS" : "Added " + added + " feeds to FreshRSS",
+           failed.length ? failed.length + " failed." : (urls.length === 1 ? urls[0] : ""));
+  } else if (failed.length) {
+    notify("FreshRSS add failed", failed[0].error);
+  }
+
+  return { ok: true, opened: false, added, failed };
 });
 
 /* ---------- deeplink (Radar's method) ---------- */
@@ -132,10 +182,15 @@ function notify(title, message) {
 
 /* ---------- click handling ---------- */
 
-chrome.contextMenus.onClicked.addListener(async (info) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   record("clicked: " + (info.menuItemId || "?"));
   if (info.menuItemId !== MENU_ID) return;
-  const url = info.linkUrl;
+
+  /* Link click -> the link target. Page/frame click -> the tab's own URL, which
+   * covers the feed-page case: the XML page IS the feed, so there is no link to
+   * right-click and info.linkUrl is null. info.frameUrl is the more precise value
+   * when the click was inside an iframe, so prefer it, then the tab, then the frame. */
+  const url = info.linkUrl || info.frameUrl || (tab && tab.url) || "";
   if (!url) return;
 
   const cfg = await getCfg();

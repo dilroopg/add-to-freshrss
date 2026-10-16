@@ -1,14 +1,50 @@
 # Add to FreshRSS
 
-Right-click any link and subscribe it to your [FreshRSS](https://freshrss.org) — no
-copy-pasting URLs into the web UI.
+> ### ⚠️ AI-generated software — use at your own risk
+>
+> **This extension was written by AI** (a large language model agent, with human
+> direction and testing). It is **not** the product of professional software
+> engineering, it has **not** been security-audited, and it has only been tested against
+> one self-hosted FreshRSS instance.
+>
+> **Understand what that means before you install it:**
+>
+> - It handles your **FreshRSS URL, username, and API password**, and stores them in your
+>   browser profile. Treat those credentials as exposed to any bug in this code.
+> - It has **not** been reviewed by anyone but its author. There may be defects that
+>   corrupt data, leak credentials, or behave unpredictably on setups unlike the one it
+>   was developed on.
+> - Behaviour on **public FreshRSS instances, other FreshRSS versions, or hosted
+>   services is untested** and may not work at all.
+> - **No warranty, no support, no guarantees.** You are responsible for your own data.
+>   Back up your FreshRSS database (`data/users/<user>/db.sqlite`) before first use.
+> - If you cannot accept those terms, **do not install this**. Use the official
+>   FreshRSS web UI instead.
+>
+> It is provided under the **MIT licence** — see `LICENSE` — which means you are free to
+> **use, modify, fork, redistribute, and sell** it, with no permission needed and no
+> obligation beyond keeping the copyright notice. If you find a bug, please fix it and
+> send a patch; the licence explicitly invites that. See
+> [Contributing](#contributing) for how the code came to exist.
+
+Right-click any link — or any page — and subscribe it to your
+[FreshRSS](https://freshrss.org) — no copy-pasting URLs into the web UI.
 
 Firefox extension, Manifest V3. No build step, no dependencies, no telemetry: it talks
 only to the FreshRSS instance you configure.
 
 ## What it does
 
-Right-click a link → **Add to FreshRSS**. Two modes:
+**Click the toolbar button** → a small popup opens where you can paste one or more
+links (one per line) and add them straight away. Handy for feeds you found somewhere
+that you don't want to hunt for on a page. `Ctrl`/`Cmd`+`Enter` adds without reaching
+for the mouse; links are deduped and blank lines ignored. A **Settings** button in the
+popup opens the preferences.
+
+**Right-click a link, or right-click the page** → **Add to FreshRSS**. Right-clicking a
+*link* subscribes that link. Right-clicking *anywhere else on a page* subscribes the
+page's own URL — which is what you want when the page you're looking at **is** an RSS
+feed, since there is no link to click. Two modes:
 
 | Mode | What happens | Needs |
 |---|---|---|
@@ -16,6 +52,12 @@ Right-click a link → **Add to FreshRSS**. Two modes:
 | **Silent (API)** | Subscribes via FreshRSS's Google Reader API and shows a notification. No tab, no password prompt. | Base URL + username + **API** password |
 
 Silent mode also takes an optional category, which is applied to the subscription.
+
+Either way, a site address works as well as a feed URL — FreshRSS does the feed
+auto-discovery itself.
+
+Adding always happens in the background page, not in the popup: a popup is torn down
+the moment it loses focus, so anything awaited inside it could silently never finish.
 
 ## Install
 
@@ -93,6 +135,26 @@ container** — not from your browser.
 Nothing is sent anywhere except your own FreshRSS instance. Credentials live in
 `browser.storage.local`; they are not synced and not transmitted to any third party.
 
+## Contributing
+
+**This project was built by AI and is published as-is.** That is stated plainly because
+it affects how you should treat the code: read it before you trust it, and don't assume
+it has had the review a human-written project would have had.
+
+The licence explicitly grants you the right to change anything. If you find a defect:
+
+1. **Fork it and fix it.** You need no permission. `LICENSE` is MIT: modify, repackage,
+   redistribute, even sell it.
+2. **Send a pull request** if you'd like the fix upstream. There is no CLA to sign and no
+   contribution process beyond "make the change and explain why".
+3. **Publish your own version** under a different name if you'd rather not wait. Point
+   people at it. Nothing here is locked down.
+
+Please keep the AI-authorship disclosure (or an accurate description of your own code) in
+any fork, so users can make an informed choice about what they're installing.
+
 ## License
 
-MIT — see `LICENSE`.
+MIT — see `LICENSE`. Copyright (c) 2026 hardlysleep.ing.
+
+Use it, fork it, ship it, sell it. The only obligation is keeping the copyright notice.

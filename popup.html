@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Add to FreshRSS</title>
+  <style>
+    body {
+      width: 320px; margin: 0; padding: 12px; box-sizing: border-box;
+      background: #171717; color: #e8e8e8; font: 13px/1.5 system-ui, sans-serif;
+    }
+    h1 { font-size: 13px; margin: 0 0 10px; font-weight: 600; color: #6ea8ff; }
+    label { display: block; font-size: 12px; font-weight: 600; margin: 0 0 4px; }
+    textarea {
+      width: 100%; box-sizing: border-box; min-height: 64px; resize: vertical;
+      padding: 7px 9px; border-radius: 6px; border: 1px solid #3a3a3a;
+      background: #0f0f0f; color: #e8e8e8; font: 12px/1.45 ui-monospace, monospace;
+    }
+    .hint { color: #8a8a8a; font-size: 11px; margin-top: 4px; }
+    .row { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+    button { padding: 7px 12px; border: 0; border-radius: 6px; font-size: 12px; cursor: pointer; }
+    button.primary { background: #0062db; color: #fff; }
+    button.primary:hover { background: #1a74e8; }
+    button.primary:disabled { background: #2b3a52; color: #7d8ba3; cursor: default; }
+    button.ghost { background: #2a2a2a; color: #ddd; }
+    button.ghost:hover { background: #383838; }
+    #status { font-size: 11px; flex: 1; }
+    .ok { color: #6ee7a0; }
+    .err { color: #ff8a8a; }
+    .sep { border: 0; border-top: 1px solid #2c2c2c; margin: 12px 0 10px; }
+    .foot { display: flex; gap: 8px; align-items: center; }
+    #mode { font-size: 11px; color: #8a8a8a; flex: 1; }
+  </style>
+</head>
+<body>
+  <h1>Add to FreshRSS</h1>
+
+  <label for="urls">Paste link(s)</label>
+  <textarea id="urls" placeholder="https://example.com/feed/&#10;One URL per line"></textarea>
+  <div class="hint">One per line. A site address works too &mdash; FreshRSS finds the feed itself.</div>
+
+  <div class="row">
+    <button type="button" id="add" class="primary">Add</button>
+    <span id="status"></span>
+  </div>
+
+  <hr class="sep">
+
+  <div class="foot">
+    <span id="mode"></span>
+    <button type="button" id="settings" class="ghost">Settings</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
