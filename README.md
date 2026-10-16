@@ -55,9 +55,6 @@ feed, since there is no link to click. Two modes:
 
 Silent mode also takes an optional category, which is applied to the subscription.
 
-Either way, a site address works as well as a feed URL — FreshRSS does the feed
-auto-discovery itself.
-
 Adding always happens in the background page, not in the popup: a popup is torn down
 the moment it loses focus, so anything awaited inside it could silently never finish.
 
