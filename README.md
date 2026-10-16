@@ -58,7 +58,7 @@ Silent mode also takes an optional category, which is applied to the subscriptio
 Adding always happens in the background page, not in the popup: a popup is torn down
 the moment it loses focus, so anything awaited inside it could silently never finish.
 
-## Install (Now available in releases, just download and upload the plugin)
+## Install (Now available in Releases, just download and import the plugin)
 
 **Firefox and Zen both work**, and so does any other Firefox-based browser. Nothing is
 built for you ahead of time — you build the add-on yourself from source, which takes
@@ -110,7 +110,7 @@ unzip -l web-ext-artifacts/add_to_freshrss-*.zip   # 9 runtime files, no extras
 ```
 
 ### Signed build 
-Head to releases and grab it.
+Head to Releases and download it.  Import the addon and enable it.  Pin it.
 
 Then open the extension's preferences (toolbar button) and fill in:
 
