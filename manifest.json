@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Add to FreshRSS",
   "version": "2.6.0",
-  "description": "Right-click a link or page to subscribe it to FreshRSS. AI-generated - use at your own risk.",
+  "description": "Right-click a link or page to subscribe a URL you already have to FreshRSS. Not a feed-discovery tool - use RSSHub Radar for that. AI-generated - use at your own risk.",
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
