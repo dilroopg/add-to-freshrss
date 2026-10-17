@@ -35,8 +35,10 @@
   <h1>Add to FreshRSS</h1>
 
   <label for="urls">Paste link(s)</label>
-  <textarea id="urls" placeholder="https://example.com/feed/&#10;One URL per line"></textarea>
-  <div class="hint">One per line. A site address works too &mdash; FreshRSS finds the feed itself.</div>
+  <textarea id="urls" placeholder="https://example.com/feed/&#10;A feed or site URL you already have &#10;(not a discovery tool)"></textarea>
+  <div class="hint">One per line. A site address works too &mdash; FreshRSS finds the feed itself.
+    <br><strong>Not for finding feeds</strong> &mdash; this subscribes URLs you already have. To discover
+    a site's feeds, use <a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank" rel="noopener">RSSHub Radar</a>.</div>
 
   <div class="row">
     <button type="button" id="add" class="primary">Add</button>

@@ -32,8 +32,37 @@
 Right-click any link — or any page — and subscribe it to your
 [FreshRSS](https://freshrss.org) — no copy-pasting URLs into the web UI.
 
+**Looking for feeds? This add-on doesn't do that — use
+[RSSHub Radar](https://github.com/DIYgod/RSSHub-Radar).** See
+[This is not a discovery tool](#this-is-not-a-discovery-tool).
+
 Firefox extension, Manifest V3. No build step, no dependencies, no telemetry: it talks
 only to the FreshRSS instance you configure.
+
+## This is not a discovery tool
+
+This extension has exactly one job: **subscribe a URL you already have to your FreshRSS
+instance.** It does not search for feeds, it does not list a site's feeds for you, and it
+does not scan a page for feed links. Its input is a URL — a feed or a plain site address —
+and its output is a subscription. That's it.
+
+**Use [RSSHub Radar](https://github.com/DIYgod/RSSHub-Radar)** to *find* feeds. Radar is
+the discovery half: it inspects the page you're on, shows every feed and RSSHub route it
+can find, and is what you want when you don't yet know the feed URL. Install Radar from
+[addons.mozilla.org](https://addons.mozilla.org/firefox/addon/rsshub-radar/) (Chrome/Edge
+builds are in the same repo).
+
+**Then use this extension** to push that URL into your FreshRSS without opening its web UI.
+
+| You want to | Use |
+|---|---|
+| Discover what feeds a page or site offers | **RSSHub Radar** |
+| Subscribe a URL you already have | **Add to FreshRSS** |
+
+The two are complementary, not competing. Radar has a "subscribe" button too, but it is
+built around RSSHub's service model and its own rules for handing off to a reader; this
+extension talks to *your* self-hosted FreshRSS directly, in either deep-link or silent API
+mode. If you're happy with Radar end to end, you don't need this.
 
 ## What it does
 
