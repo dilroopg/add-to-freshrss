@@ -39,6 +39,25 @@ Right-click any link — or any page — and subscribe it to your
 Firefox extension, Manifest V3. No build step, no dependencies, no telemetry: it talks
 only to the FreshRSS instance you configure.
 
+## About FreshRSS
+
+This add-on is a client for **[FreshRSS](https://freshrss.org)** — the free, self-hosted
+RSS/Atom aggregator (GPL-3.0, [source](https://github.com/FreshRSS/FreshRSS)) that you run
+on your own server or NAS. If you don't already have a FreshRSS instance, this extension
+has nothing to talk to: set that up first, then come back.
+
+- Website: <https://freshrss.org>
+- Source: <https://github.com/FreshRSS/FreshRSS>
+- Docs / install: <https://freshrss.github.io/FreshRSS/en/admins/03_Installation.html>
+
+What this add-on adds is the outside-the-web-UI path into it: instead of opening your
+FreshRSS, clicking *Add a feed*, and pasting a URL, you right-click the link while you're
+already looking at it.
+
+This project is **unaffiliated with the FreshRSS project** — it's an independent client
+that speaks FreshRSS's own Google Reader API (see [Getting silent mode
+right](#getting-silent-mode-right)). Bugs here are mine, not theirs.
+
 ## This is not a discovery tool
 
 This extension has exactly one job: **subscribe a URL you already have to your FreshRSS
