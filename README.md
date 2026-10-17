@@ -6,7 +6,7 @@
 [Zen](https://zen-browser.app/),** and in any other Firefox-based browser (Floorp,
 Waterfox, LibreWolf, Mullvad…). Not a Chromium extension: it uses `browser.*` APIs and an
 unpacked MV3 install path, so Chrome, Edge and Brave are out of scope. See
-[Install](#install-now-available-in-releases-just-download-and-import-the-plugin).
+[Install](#install-the-easy-way--signed-from-releases).
 
 > ### ⚠️ AI-generated software — use at your own risk
 >
@@ -114,11 +114,73 @@ Silent mode also takes an optional category, which is applied to the subscriptio
 Adding always happens in the background page, not in the popup: a popup is torn down
 the moment it loses focus, so anything awaited inside it could silently never finish.
 
-## Install (Now available in Releases, just download and import the plugin)
+## Install (the easy way — signed, from Releases)
 
-**Firefox and Zen both work**, and so does any other Firefox-based browser. Nothing is
-built for you ahead of time — you build the add-on yourself from source, which takes
-about ten seconds and means you are running exactly the code you can read.
+**Just want to use it?** Download the signed `.xpi` from
+**[Releases](https://github.com/dilroopg/add-to-freshrss/releases/latest)** and import it.
+That's the whole install. Nothing is built by you, there is no build step to run, and
+signing is already done — so it installs permanently and survives restarts.
+
+1. Go to [Releases](https://github.com/dilroopg/add-to-freshrss/releases/latest) and
+   download **`add-to-freshrss-<version>.xpi`** (under *Assets*). Ignore the "Source code"
+   links — those are for developers.
+2. In **Firefox or Zen**, open a new tab and go to `about:addons`
+   (or **☰ → Add-ons and themes**).
+3. Click the **gear icon** (top right of the Add-ons page) → **Install Add-on From File…**
+4. Pick the `.xpi` you downloaded and confirm. Firefox/Zen may ask you to allow the
+   install — that's normal for a self-distributed add-on.
+5. **Pin it to the toolbar** so the button is always there: right-click the toolbar →
+   *Customize Toolbar…*, then drag *Add to FreshRSS* onto the toolbar.
+
+Then do the two-minute [Setup](#setup) below.
+
+> **Why this works without the "corrupt add-on" error:** the `.xpi` in Releases is
+> **signed by Mozilla**, so you do **not** need to touch `xpinstall.signatures.required`.
+> If you see that error, you grabbed a self-built `.zip` from the build section below, not
+> the signed release.
+
+**Firefox versions below 140 are not supported** — the manifest uses
+`data_collection_permissions`, which older versions do not understand and will reject.
+140 is the current ESR, so any maintained Firefox or Zen build qualifies.
+
+## Setup
+
+Two fields, once.
+
+1. Open the add-on's preferences: click the toolbar button, then **Settings** in the popup
+   (or `about:addons` → *Add to FreshRSS* → *Preferences*).
+2. Fill in **FreshRSS address** — where your instance lives, e.g.
+   `https://rss.example.com` (no trailing slash needed).
+3. *Optional, for silent mode:* **Username** and **API password**. The API password is
+   *not* your login password — in FreshRSS go to **Settings → Profile → API management**
+   (or run `./cli/create-user.php --api-password …`) and copy the one it generates.
+4. Save. You're done.
+
+### Using it
+
+- **Subscribe a link:** right-click any link → **Add to FreshRSS**.
+- **Subscribe the page you're on:** right-click anywhere else on the page → same item.
+  This is what you want when the page *is* a feed.
+- **Paste one or many:** click the toolbar button, paste one URL per line, press **Add**
+  (`Ctrl`/`Cmd`+`Enter`). Blank lines are ignored and duplicates are dropped.
+- **Deep link vs silent:** with no username/password saved you get the *deep link* mode — a
+  background tab opens FreshRSS's own add-feed page with the URL filled in, and you confirm
+  there. Add the API password and it instead subscribes by API with a notification, no tab.
+- **Category:** in silent mode you can set a category, applied to each new subscription.
+
+**Finding feeds is not what this does** — see
+[This is not a discovery tool](#this-is-not-a-discovery-tool). Use
+[RSSHub Radar](https://github.com/DIYgod/RSSHub-Radar) for that, then subscribe the URL
+here.
+
+## Build it from source (only if you want to)
+
+**You do not need this section to install the add-on.** It exists for people who want to
+run their own build or verify the code, not as an install route. If you just want it
+working, use [Releases](#install-the-easy-way--signed-from-releases) above.
+
+Nothing is built for you ahead of time in this path — you build the add-on yourself, which
+takes about ten seconds and means you are running exactly the code you can read.
 
 ### Build it from source (no account, no signing)
 
@@ -165,20 +227,11 @@ And to confirm your build matches what you just read:
 unzip -l web-ext-artifacts/add_to_freshrss-*.zip   # 9 runtime files, no extras
 ```
 
-### Signed build 
-Head to Releases and download it.  Import the addon and enable it.  Pin it.
-
-Then open the extension's preferences (toolbar button) and fill in:
-
-- **FreshRSS address** — e.g. `https://rss.example.com`
-- **Username** and **API password** (silent mode only)
-
-The API password is *not* your login password. In FreshRSS: **Settings → Profile →
-API management** (or `./cli/create-user.php --api-password …`).
-
-**Firefox versions below 140 are not supported** — the manifest uses
-`data_collection_permissions`, which older versions do not understand and will reject.
-140 is the current ESR, so any maintained Firefox or Zen build qualifies.
+### Signed build
+Head to [Releases](https://github.com/dilroopg/add-to-freshrss/releases/latest) and
+download it. Import the add-on and enable it. Pin it. Full steps are in
+[Install](#install-the-easy-way--signed-from-releases) and
+[Setup](#setup) above.
 
 ## Getting silent mode right
 
