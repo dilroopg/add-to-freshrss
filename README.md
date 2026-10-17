@@ -1,5 +1,13 @@
 # Add to FreshRSS
 
+![Firefox and Zen](assets/firefox.svg) → ![FreshRSS](assets/freshrss.svg)
+
+**A Firefox extension — works in [Firefox](https://www.mozilla.org/firefox/) and
+[Zen](https://zen-browser.app/),** and in any other Firefox-based browser (Floorp,
+Waterfox, LibreWolf, Mullvad…). Not a Chromium extension: it uses `browser.*` APIs and an
+unpacked MV3 install path, so Chrome, Edge and Brave are out of scope. See
+[Install](#install-now-available-in-releases-just-download-and-import-the-plugin).
+
 > ### ⚠️ AI-generated software — use at your own risk
 >
 > **This extension was written by AI** (a large language model agent, with human
@@ -269,3 +277,16 @@ merchantability or fitness for a particular purpose.
 **You may not** take this code, modify it, and ship it as closed-source or without
 crediting the original author. Derivative works are permitted only under these same
 terms.
+
+## Third-party logos
+
+`assets/firefox.svg` is the Firefox logo, a trademark of the
+[Mozilla Foundation](https://www.mozilla.org/foundation/), used here only to indicate that
+this add-on runs in Firefox (and other Firefox-based browsers such as
+[Zen](https://zen-browser.app/)). `assets/freshrss.svg` is the
+[FreshRSS](https://freshrss.org) logo, used to indicate which service this add-on talks to.
+
+Both are the property of their respective projects and are included for identification
+only. Their presence does not imply any affiliation with, endorsement by, or sponsorship
+from Mozilla or the FreshRSS project. Logos are not covered by this project's GPL-3.0
+license.

@@ -9,6 +9,16 @@
       background: #171717; color: #e8e8e8; font: 13px/1.5 system-ui, sans-serif;
     }
     h1 { font-size: 13px; margin: 0 0 10px; font-weight: 600; color: #6ea8ff; }
+    .brand {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 9px; margin: 0 0 10px; border-radius: 6px;
+      background: #101010; border: 1px solid #2c2c2c;
+    }
+    .brand img.ico { height: 20px; width: auto; display: block; }
+    .brand img.ico.wide { height: 16px; }
+    .brand .x { color: #6a6a6a; font-size: 12px; }
+    .brand .brandtext { margin-left: auto; font-size: 10px; color: #9a9a9a; text-align: right; }
+    .brand .brandtext strong { color: #cfcfcf; font-weight: 600; }
     label { display: block; font-size: 12px; font-weight: 600; margin: 0 0 4px; }
     textarea {
       width: 100%; box-sizing: border-box; min-height: 64px; resize: vertical;
@@ -33,6 +43,13 @@
 </head>
 <body>
   <h1>Add to FreshRSS</h1>
+
+  <div class="brand">
+    <img src="assets/firefox.svg" alt="Firefox" class="ico" title="Firefox">
+    <span class="x">&rarr;</span>
+    <img src="assets/freshrss.svg" alt="FreshRSS" class="ico wide" title="FreshRSS">
+    <span class="brandtext">Works with <strong>Firefox</strong> and <strong>Zen</strong></span>
+  </div>
 
   <label for="urls">Paste link(s)</label>
   <textarea id="urls" placeholder="https://example.com/feed/&#10;A feed or site URL you already have &#10;(not a discovery tool)"></textarea>
