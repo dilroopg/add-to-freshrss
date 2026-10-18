@@ -1,5 +1,7 @@
 # Add to FreshRSS
 
+Part of [dilroopg's FreshRSS extensions](https://github.com/dilroopg/freshrss-extensions) — see the hub for everything else.
+
 ![Firefox and Zen](assets/firefox.svg) → ![FreshRSS](assets/freshrss.svg)
 
 **A Firefox extension — works in [Firefox](https://www.mozilla.org/firefox/) and
@@ -8,34 +10,16 @@ Waterfox, LibreWolf, Mullvad…). Not a Chromium extension: it uses `browser.*` 
 unpacked MV3 install path, so Chrome, Edge and Brave are out of scope. See
 [Install](#install-the-easy-way--signed-from-releases).
 
-> ### ⚠️ AI-generated software — use at your own risk
+> **Disclosure:** this extension was written by AI (a large language model, with human
+> direction and testing). Read the code before you trust it, and back up your FreshRSS
+> database (`data/users/<user>/db.sqlite`) before first use.
 >
-> **This extension was written by AI** (a large language model agent, with human
-> direction and testing). It is **not** the product of professional software
-> engineering, it has **not** been security-audited, and it has only been tested against
-> one self-hosted FreshRSS instance.
+> It handles your FreshRSS URL, username and API password, and stores them in your
+> browser profile. No warranty, no support.
 >
-> **Understand what that means before you install it:**
->
-> - It handles your **FreshRSS URL, username, and API password**, and stores them in your
->   browser profile. Treat those credentials as exposed to any bug in this code.
-> - It has **not** been reviewed by anyone but its author. There may be defects that
->   corrupt data, leak credentials, or behave unpredictably on setups unlike the one it
->   was developed on.
-> - Behaviour on **public FreshRSS instances, other FreshRSS versions, or hosted
->   services is untested** and may not work at all.
-> - **No warranty, no support, no guarantees.** You are responsible for your own data.
->   Back up your FreshRSS database (`data/users/<user>/db.sqlite`) before first use.
-> - If you cannot accept those terms, **do not install this**. Use the official
->   FreshRSS web UI instead.
->
-> It is provided under the **GNU General Public License v3.0 or later** — see `LICENSE`.
-> You may **use, study, modify, fork and redistribute** it, and you may even redistribute
-> it for a fee, but if you distribute a build of it you **must** publish your version's
-> complete source under GPL-3.0, **keep the copyright notice and attribution to the
-> original author**, and state what you changed. You may not ship a modified build as
-> closed source or with the credit stripped. See [Contributing](#contributing) for how
-> the code came to exist.
+> Licensed **GPL-3.0-or-later** — see `LICENSE`. If you distribute a modified build you
+> must publish its complete source under GPL-3.0 and keep the copyright notice and
+> attribution to the original author. See [Contributing](#contributing).
 
 Right-click any link — or any page — and subscribe it to your
 [FreshRSS](https://freshrss.org) — no copy-pasting URLs into the web UI.
