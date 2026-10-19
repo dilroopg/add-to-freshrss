@@ -1,6 +1,6 @@
 # Add to FreshRSS
 
-Part of [dilroopg's FreshRSS extensions](https://github.com/dilroopg/freshrss-extensions) — see the hub for everything else.
+Part of [hardlysleeping's FreshRSS extensions](https://github.com/hardlysleeping/freshrss-extensions) — see the hub for everything else.
 
 ![Firefox and Zen](assets/firefox.svg) → ![FreshRSS](assets/freshrss.svg)
 
@@ -101,11 +101,11 @@ the moment it loses focus, so anything awaited inside it could silently never fi
 ## Install (the easy way — signed, from Releases)
 
 **Just want to use it?** Download the signed `.xpi` from
-**[Releases](https://github.com/dilroopg/add-to-freshrss/releases/latest)** and import it.
+**[Releases](https://github.com/hardlysleeping/add-to-freshrss/releases/latest)** and import it.
 That's the whole install. Nothing is built by you, there is no build step to run, and
 signing is already done — so it installs permanently and survives restarts.
 
-1. Go to [Releases](https://github.com/dilroopg/add-to-freshrss/releases/latest) and
+1. Go to [Releases](https://github.com/hardlysleeping/add-to-freshrss/releases/latest) and
    download **`add-to-freshrss-<version>.xpi`** (under *Assets*). Ignore the "Source code"
    links — those are for developers.
 2. In **Firefox or Zen**, open a new tab and go to `about:addons`
@@ -171,7 +171,7 @@ takes about ten seconds and means you are running exactly the code you can read.
 Requires [Node.js](https://nodejs.org) (any recent LTS).
 
 ```sh
-git clone https://github.com/dilroopg/add-to-freshrss.git
+git clone https://github.com/hardlysleeping/add-to-freshrss.git
 cd add-to-freshrss
 npx --yes web-ext@latest build          # -> web-ext-artifacts/add_to_freshrss-*.zip
 ```
@@ -212,7 +212,7 @@ unzip -l web-ext-artifacts/add_to_freshrss-*.zip   # 9 runtime files, no extras
 ```
 
 ### Signed build
-Head to [Releases](https://github.com/dilroopg/add-to-freshrss/releases/latest) and
+Head to [Releases](https://github.com/hardlysleeping/add-to-freshrss/releases/latest) and
 download it. Import the add-on and enable it. Pin it. Full steps are in
 [Install](#install-the-easy-way--signed-from-releases) and
 [Setup](#setup) above.
