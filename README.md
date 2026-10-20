@@ -327,3 +327,7 @@ Both are the property of their respective projects and are included for identifi
 only. Their presence does not imply any affiliation with, endorsement by, or sponsorship
 from Mozilla or the FreshRSS project. Logos are not covered by this project's GPL-3.0
 license.
+
+## Support
+
+[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=RNT5W4XNC64EY)
