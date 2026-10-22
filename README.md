@@ -8,7 +8,7 @@ Part of [hardlysleeping's FreshRSS extensions](https://github.com/hardlysleeping
 [Zen](https://zen-browser.app/),** and in any other Firefox-based browser (Floorp,
 Waterfox, LibreWolf, Mullvad…). Not a Chromium extension: it uses `browser.*` APIs and an
 unpacked MV3 install path, so Chrome, Edge and Brave are out of scope. See
-[Install](#install-the-easy-way--signed-from-releases).
+[Install](#install).
 
 > **Disclosure:** this extension was written by AI (a large language model, with human
 > direction and testing). Read the code before you trust it, and back up your FreshRSS
@@ -23,6 +23,10 @@ unpacked MV3 install path, so Chrome, Edge and Brave are out of scope. See
 
 Right-click any link — or any page — and subscribe it to your
 [FreshRSS](https://freshrss.org) — no copy-pasting URLs into the web UI.
+
+**[Install from addons.mozilla.org](https://addons.mozilla.org/firefox/addon/add-to-freshrss/)**
+— signed by Mozilla, auto-updating. ([Releases](https://github.com/hardlysleeping/add-to-freshrss/releases/latest)
+carries the same signed build if you prefer a file.)
 
 **Looking for feeds? This add-on doesn't do that — use
 [RSSHub Radar](https://github.com/DIYgod/RSSHub-Radar).** See
@@ -98,9 +102,15 @@ Silent mode also takes an optional category, which is applied to the subscriptio
 Adding always happens in the background page, not in the popup: a popup is torn down
 the moment it loses focus, so anything awaited inside it could silently never finish.
 
-## Install (the easy way — signed, from Releases)
+## Install
 
-**Just want to use it?** Download the signed `.xpi` from
+**Just want to use it?** Install it from
+**[addons.mozilla.org](https://addons.mozilla.org/firefox/addon/add-to-freshrss/)** — one
+click, signed by Mozilla, and it updates itself. That is the recommended route.
+
+### Installing from the signed `.xpi` instead
+
+If you would rather install a file than use the store, download the signed `.xpi` from
 **[Releases](https://github.com/hardlysleeping/add-to-freshrss/releases/latest)** and import it.
 That's the whole install. Nothing is built by you, there is no build step to run, and
 signing is already done — so it installs permanently and survives restarts.
@@ -149,7 +159,8 @@ Two fields, once.
   (`Ctrl`/`Cmd`+`Enter`). Blank lines are ignored and duplicates are dropped.
 - **Deep link vs silent:** with no username/password saved you get the *deep link* mode — a
   background tab opens FreshRSS's own add-feed page with the URL filled in, and you confirm
-  there. Add the API password and it instead subscribes by API with a notification, no tab.
+  there. Add the API password and it instead subscribes by API with a notification and no
+  tab — click that notification and it opens the new feed's settings page in FreshRSS.
 - **Category:** in silent mode you can set a category, applied to each new subscription.
 
 **Finding feeds is not what this does** — see
@@ -161,7 +172,7 @@ here.
 
 **You do not need this section to install the add-on.** It exists for people who want to
 run their own build or verify the code, not as an install route. If you just want it
-working, use [Releases](#install-the-easy-way--signed-from-releases) above.
+working, use [Install](#install) above.
 
 Nothing is built for you ahead of time in this path — you build the add-on yourself, which
 takes about ten seconds and means you are running exactly the code you can read.
@@ -214,7 +225,7 @@ unzip -l web-ext-artifacts/add_to_freshrss-*.zip   # 9 runtime files, no extras
 ### Signed build
 Head to [Releases](https://github.com/hardlysleeping/add-to-freshrss/releases/latest) and
 download it. Import the add-on and enable it. Pin it. Full steps are in
-[Install](#install-the-easy-way--signed-from-releases) and
+[Install](#install) and
 [Setup](#setup) above.
 
 ## Getting silent mode right
