@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Add to FreshRSS",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "Firefox/Zen add-on: right-click a link or page to subscribe a URL you already have to FreshRSS. Not a feed-discovery tool - use RSSHub Radar for that.",
   "icons": {
     "48": "icons/icon-48.png",

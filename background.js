@@ -11,6 +11,7 @@
  */
 
 const MENU_ID = "add-to-freshrss";
+const NOTIFICATION_LINK_KEY = "notificationLinks";
 
 const DEFAULTS = {
   baseUrl: "",
@@ -96,20 +97,27 @@ browser.runtime.onMessage.addListener(async (msg) => {
 
   let added = 0;
   const failed = [];
+  const addedIds = [];
   for (const url of urls) {
     try {
-      await addViaApi(cfg, url);
+      const feedId = await addViaApi(cfg, url);
       added++;
+      if (feedId) addedIds.push(feedId);
     } catch (e) {
       failed.push({ url, error: String(e && e.message ? e.message : e) });
     }
   }
 
   if (added) {
-    notify(added === 1 ? "Added to FreshRSS" : "Added " + added + " feeds to FreshRSS",
-           failed.length ? failed.length + " failed." : (urls.length === 1 ? urls[0] : ""));
+    // One feed added -> the notification opens that feed's settings page.
+    // Several -> no single settings page to point at, so no link.
+    const link = urls.length === 1 && addedIds.length === 1
+      ? feedSettingsUrl(cfg, addedIds[0]) : "";
+    await notify(added === 1 ? "Added to FreshRSS" : "Added " + added + " feeds to FreshRSS",
+                 failed.length ? failed.length + " failed." : (urls.length === 1 ? urls[0] : ""),
+                 link);
   } else if (failed.length) {
-    notify("FreshRSS add failed", failed[0].error);
+    await notify("FreshRSS add failed", failed[0].error);
   }
 
   return { ok: true, opened: false, added, failed };
@@ -123,6 +131,12 @@ function openDeepLink(cfg, url) {
     url: trimBase(cfg.baseUrl) + "/i/?c=feed&a=add&url_rss=" + encodeURIComponent(url),
     active: false
   });
+}
+
+/* FreshRSS's own "feed added" redirect is c=subscription&a=feed&id=N
+ * (subscriptionController::feedAction), so that is the settings route. */
+function feedSettingsUrl(cfg, feedId) {
+  return trimBase(cfg.baseUrl) + "/i/?c=subscription&a=feed&id=" + encodeURIComponent(feedId);
 }
 
 /* ---------- silent API add ---------- */
@@ -150,8 +164,40 @@ async function login(cfg) {
   return m[1].trim();     // "<user>/<sha1>"
 }
 
+async function listSubscriptions(cfg, auth) {
+  const res = await fetch(trimBase(cfg.baseUrl) + "/api/greader.php/reader/api/0/subscription/list?output=json", {
+    headers: { "Authorization": "GoogleLogin auth=" + auth }
+  });
+  if (!res.ok) throw new Error("subscription list HTTP " + res.status);
+  const data = await res.json();
+  return Array.isArray(data.subscriptions) ? data.subscriptions : [];
+}
+
+function sameFeedUrl(a, b) {
+  if (!a || !b) return false;
+  try {
+    const strip = (raw) => {
+      const u = new URL(raw);
+      return u.origin + u.pathname.replace(/\/+$/, "");
+    };
+    return strip(a) === strip(b);
+  } catch (e) {
+    return a === b;
+  }
+}
+
+/* Subscribes silently and returns the new feed's numeric id, or null.
+ * The id is only needed to link the notification to the feed's settings page,
+ * so a failed lookup returns null instead of throwing: the feed WAS added and
+ * must not be reported as a failure. The id is found by diffing the
+ * subscription list around the subscribe call, which survives FreshRSS
+ * rewriting the URL (301) to a canonical one; a URL match is the fallback. */
 async function addViaApi(cfg, feedUrl) {
   const auth = await login(cfg);
+
+  let before = null;
+  try { before = await listSubscriptions(cfg, auth); } catch (e) { /* best effort */ }
+
   const params = new URLSearchParams({ ac: "subscribe", s: "feed/" + feedUrl });
   if (cfg.category) params.append("a", "user/-/label/" + cfg.category);
 
@@ -166,19 +212,71 @@ async function addViaApi(cfg, feedUrl) {
   const text = await res.text();
   if (!res.ok) throw new Error("subscribe HTTP " + res.status);
   if (!/(^|\n)OK(\n|$)/.test(text)) throw new Error("FreshRSS said: " + (text.trim().slice(0, 80) || "(empty)"));
-  return true;
+
+  try {
+    const after = await listSubscriptions(cfg, auth);
+    let id = "";
+    if (before) {
+      const known = new Set(before.map((sub) => sub.id));
+      const fresh = after.filter((sub) => !known.has(sub.id));
+      if (fresh.length === 1) id = fresh[0].id;
+    }
+    if (!id) {
+      const match = after.find((sub) => sameFeedUrl(sub.url, feedUrl));
+      if (match) id = match.id;
+    }
+    return /^feed\/[0-9]+$/.test(id) ? id.slice("feed/".length) : null;
+  } catch (e) {
+    return null;
+  }
 }
 
-function notify(title, message) {
+/* The notification outlives this background page (MV3 event pages are torn
+ * down), so the link is kept in storage.local rather than in a variable that
+ * would be gone by the time the user clicks. */
+async function readNotificationLinks() {
+  const stored = await browser.storage.local.get({ [NOTIFICATION_LINK_KEY]: {} });
+  return stored[NOTIFICATION_LINK_KEY] || {};
+}
+
+async function notify(title, message, link) {
   try {
-    browser.notifications.create({
+    const notificationId = "add-to-freshrss-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+    await browser.notifications.create(notificationId, {
       type: "basic",
       iconUrl: browser.runtime.getURL("icons/icon-96.png"),
       title: title,
       message: message
     });
+    if (link) {
+      const links = await readNotificationLinks();
+      links[notificationId] = link;
+      const ids = Object.keys(links);
+      for (const stale of ids.slice(0, Math.max(0, ids.length - 20))) delete links[stale];
+      await browser.storage.local.set({ [NOTIFICATION_LINK_KEY]: links });
+    }
   } catch (e) { /* best effort */ }
 }
+
+async function forgetNotification(notificationId) {
+  const links = await readNotificationLinks();
+  if (!(notificationId in links)) return;
+  delete links[notificationId];
+  await browser.storage.local.set({ [NOTIFICATION_LINK_KEY]: links });
+}
+
+browser.notifications.onClicked.addListener(async (notificationId) => {
+  const links = await readNotificationLinks();
+  const url = links[notificationId];
+  if (!url) return;
+  await forgetNotification(notificationId);
+  browser.tabs.create({ url, active: false });
+  browser.notifications.clear(notificationId);
+});
+
+browser.notifications.onClosed.addListener((notificationId) => {
+  forgetNotification(notificationId);
+});
 
 /* ---------- click handling ---------- */
 
@@ -210,9 +308,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 
   try {
-    await addViaApi(cfg, url);
-    notify("Added to FreshRSS", url);
+    const feedId = await addViaApi(cfg, url);
+    // awaited: the notification id -> settings link must be stored before this
+    // background page can be torn down, or the click would find nothing.
+    await notify("Added to FreshRSS", url, feedId ? feedSettingsUrl(cfg, feedId) : "");
   } catch (e) {
-    notify("FreshRSS add failed", String(e && e.message ? e.message : e));
+    await notify("FreshRSS add failed", String(e && e.message ? e.message : e));
   }
 });
