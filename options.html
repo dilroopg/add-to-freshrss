@@ -69,6 +69,17 @@
         background tab &mdash; no password needed.<br>
         On: the feed is submitted straight from here and you get a notification instead.
       </div>
+
+      <label for="notificationTarget">Notification opens</label>
+      <select id="notificationTarget">
+        <option value="settings">That feed's FreshRSS settings page</option>
+        <option value="feed">The feed's own link</option>
+      </select>
+      <div class="hint">
+        Silent mode only. <b>Settings page</b> (default) jumps to where you can rename,
+        move or delete the feed. <b>Feed's own link</b> opens the address it was subscribed
+        from &mdash; the older behaviour.
+      </div>
     </fieldset>
 
     <fieldset>

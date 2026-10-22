@@ -5,7 +5,8 @@ const DEFAULTS = {
   mode: "deeplink",
   user: "",
   apiPassword: "",
-  category: ""
+  category: "",
+  notificationTarget: "settings"
 };
 
 const $ = (id) => document.getElementById(id);
@@ -23,7 +24,8 @@ function readForm() {
     mode: $("useApi").checked ? "api" : "deeplink",
     user: $("user").value.trim(),
     apiPassword: $("apiPassword").value,
-    category: $("category").value.trim()
+    category: $("category").value.trim(),
+    notificationTarget: $("notificationTarget").value === "feed" ? "feed" : "settings"
   };
 }
 
@@ -34,6 +36,7 @@ async function load() {
   $("user").value = cfg.user || "";
   $("apiPassword").value = cfg.apiPassword || "";
   $("category").value = cfg.category || "";
+  $("notificationTarget").value = cfg.notificationTarget === "feed" ? "feed" : "settings";
 
   showGrant(cfg.baseUrl);   // "granted / not granted yet" for the stored address
 
@@ -60,7 +63,7 @@ function autosaveNow() {
   clearTimeout(saveTimer);
   try { browser.storage.local.set(readForm()); } catch (e) { /* page is going away */ }
 }
-["baseUrl", "user", "apiPassword", "category"].forEach((id) => {
+["baseUrl", "user", "apiPassword", "category", "notificationTarget"].forEach((id) => {
   $(id).addEventListener("input", autosave);
   $(id).addEventListener("change", autosave);
 });

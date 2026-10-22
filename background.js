@@ -18,7 +18,8 @@ const DEFAULTS = {
   mode: "deeplink",
   user: "",
   apiPassword: "",
-  category: ""
+  category: "",
+  notificationTarget: "settings"
 };
 
 function getCfg() {
@@ -112,7 +113,7 @@ browser.runtime.onMessage.addListener(async (msg) => {
     // One feed added -> the notification opens that feed's settings page.
     // Several -> no single settings page to point at, so no link.
     const link = urls.length === 1 && addedIds.length === 1
-      ? feedSettingsUrl(cfg, addedIds[0]) : "";
+      ? notificationTargetUrl(cfg, addedIds[0], urls[0]) : "";
     await notify(added === 1 ? "Added to FreshRSS" : "Added " + added + " feeds to FreshRSS",
                  failed.length ? failed.length + " failed." : (urls.length === 1 ? urls[0] : ""),
                  link);
@@ -137,6 +138,13 @@ function openDeepLink(cfg, url) {
  * (subscriptionController::feedAction), so that is the settings route. */
 function feedSettingsUrl(cfg, feedId) {
   return trimBase(cfg.baseUrl) + "/i/?c=subscription&a=feed&id=" + encodeURIComponent(feedId);
+}
+
+/* Where a "feed added" notification leads. Default is the feed's settings
+ * page; "feed" is the older behaviour of opening the subscribed feed URL. */
+function notificationTargetUrl(cfg, feedId, feedUrl) {
+  if (cfg.notificationTarget === "feed") return feedUrl;
+  return feedId ? feedSettingsUrl(cfg, feedId) : "";
 }
 
 /* ---------- silent API add ---------- */
@@ -311,7 +319,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     const feedId = await addViaApi(cfg, url);
     // awaited: the notification id -> settings link must be stored before this
     // background page can be torn down, or the click would find nothing.
-    await notify("Added to FreshRSS", url, feedId ? feedSettingsUrl(cfg, feedId) : "");
+    await notify("Added to FreshRSS", url, notificationTargetUrl(cfg, feedId, url));
   } catch (e) {
     await notify("FreshRSS add failed", String(e && e.message ? e.message : e));
   }

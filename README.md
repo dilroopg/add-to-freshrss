@@ -28,6 +28,12 @@ Right-click any link — or any page — and subscribe it to your
 — signed by Mozilla, auto-updating. ([Releases](https://github.com/hardlysleeping/add-to-freshrss/releases/latest)
 carries the same signed build if you prefer a file.)
 
+> **The store build is slightly behind this repository.** Mozilla currently serves
+> **2.6.0**; the source here is **2.7.1**. What differs: in 2.6.0, clicking the
+> "feed added" notification opens **the feed's own link**; in 2.7.1 it opens **that feed's
+> FreshRSS settings page** by default, with the old behaviour still available as a setting
+> (*Settings → Notification opens → The feed's own link*).
+
 **Looking for feeds? This add-on doesn't do that — use
 [RSSHub Radar](https://github.com/DIYgod/RSSHub-Radar).** See
 [This is not a discovery tool](#this-is-not-a-discovery-tool).
@@ -106,7 +112,9 @@ the moment it loses focus, so anything awaited inside it could silently never fi
 
 **Just want to use it?** Install it from
 **[addons.mozilla.org](https://addons.mozilla.org/firefox/addon/add-to-freshrss/)** — one
-click, signed by Mozilla, and it updates itself. That is the recommended route.
+click, signed by Mozilla, and it updates itself. That is the recommended route, with one
+caveat: the store build is currently **2.6.0**, while this repository is **2.7.1**. See
+[Version differences](#version-differences) for what that means in practice.
 
 ### Installing from the signed `.xpi` instead
 
@@ -137,6 +145,17 @@ Then do the two-minute [Setup](#setup) below.
 `data_collection_permissions`, which older versions do not understand and will reject.
 140 is the current ESR, so any maintained Firefox or Zen build qualifies.
 
+## Version differences
+
+| | 2.6.0 (what addons.mozilla.org serves today) | 2.7.1 (this repository, and Releases) |
+|---|---|---|
+| Clicking the "feed added" notification | opens the subscribed feed's own link | opens that feed's FreshRSS settings page (`?c=subscription&a=feed&id=…`) |
+| Choosing which of the two | not available | **Settings → Notification opens** |
+
+Nothing else about subscribing changed: same right-click menu, same popup, same deep-link
+and silent-API modes, same credentials handling. 2.7.1 falls back to no link at all when it
+cannot resolve the new feed's id — the add is still reported as a success, because it was.
+
 ## Setup
 
 Two fields, once.
@@ -162,6 +181,12 @@ Two fields, once.
   there. Add the API password and it instead subscribes by API with a notification and no
   tab — click that notification and it opens the new feed's settings page in FreshRSS.
 - **Category:** in silent mode you can set a category, applied to each new subscription.
+- **Where the notification goes:** in silent mode, clicking the "feed added" notification
+  opens that feed's FreshRSS settings page (`?c=subscription&a=feed&id=…`) by default, so
+  you can rename, move or delete it straight away. If you would rather it opened the
+  subscribed URL itself — what 2.6.0 did — switch **Notification opens → The feed's own
+  link** in the preferences. The setting only affects silent mode, and only single-feed
+  adds get a link (several feeds at once have no single page to point at).
 
 **Finding feeds is not what this does** — see
 [This is not a discovery tool](#this-is-not-a-discovery-tool). Use
